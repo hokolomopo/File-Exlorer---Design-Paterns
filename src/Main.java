@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,6 +19,7 @@ public class Main {
                 Logger.instantiate(new STDOutLogWriter());
         } catch (InstantiationException | IOException e) {
             e.printStackTrace();
+            Logger.getInstance().log(e.toString());
         }
         GuiHandler.getInstance();
     }

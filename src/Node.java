@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Node implements Cloneable{
     protected int level = 0;
@@ -86,6 +87,10 @@ class Folder extends Node{
 
     public void addChild(Node child){
         children.add(child);
+    }
+
+    private String getCopyName(Node node, int copyNumber){
+        return String.format("%s(copy_%d)", node.name, copyNumber);
     }
 
     @Override

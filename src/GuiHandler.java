@@ -12,13 +12,13 @@ public class GuiHandler implements ExplorerEventsHandler {
 	//Used to remember last inserted nodes for recursive calls
 	private HashMap<Integer, Node> lastInsertedNodes = new HashMap<>();
 
-	private static Logger log;
+	private static Logger logger;
 
 	private static GuiHandler INSTANCE;
 	static GuiHandler getInstance()  {
 		if(INSTANCE == null)
 			INSTANCE = new GuiHandler();
-		log = Logger.getInstance();
+		logger = Logger.getInstance();
 
 		return INSTANCE;
 	}
@@ -37,7 +37,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 	
 	@Override
 	public void createAliasEvent(Object selectedNode) {
-		log.log("createAliasEvent");
+		logger.log("createAliasEvent");
 
 		this.selectedNode = (Node)selectedNode;
 
@@ -53,13 +53,14 @@ public class GuiHandler implements ExplorerEventsHandler {
 			esv.refreshTree();
 		} catch (NoSelectedNodeException | NoParentNodeException e) {
 			e.printStackTrace();
+			logger.log(e.toString());
 		}
 
 	}
 
 	@Override
 	public void createArchiveEvent(Object selectedNode) {
-		log.log("createArchiveEvent");
+		logger.log("createArchiveEvent");
 
 		this.selectedNode = (Node)selectedNode;
 
@@ -100,14 +101,13 @@ public class GuiHandler implements ExplorerEventsHandler {
 			esv.refreshTree();
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.log(e.toString());
 		}
-
-
 	}
 
 	@Override
 	public void createCopyEvent(Object selectedNode) {
-		log.log("createCopyEvent");
+		logger.log("createCopyEvent");
 
 		this.selectedNode = (Node)selectedNode;
 
@@ -130,7 +130,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 
 	@Override
 	public void createFileEvent(Object selectedNode) {
-		log.log("createFileEvent");
+		logger.log("createFileEvent");
 
 		this.selectedNode = (Node)selectedNode;
 
@@ -151,6 +151,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 			this.addNodeToSelectedNode(newFile);
 		} catch (NoSelectedNodeException e) {
 			e.printStackTrace();
+			logger.log(e.toString());
 		}
 
 		esv.refreshTree();
@@ -158,7 +159,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 
 	@Override
 	public void createFolderEvent(Object selectedNode) {
-		log.log("createFolderEvent");
+		logger.log("createFolderEvent");
 		this.selectedNode = (Node)selectedNode;
 
 		if (!(this.selectedNode instanceof Folder)){
@@ -183,6 +184,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 			this.addNodeToSelectedNode(newFolder);
 		} catch (NoSelectedNodeException e) {
 			e.printStackTrace();
+			logger.log(e.toString());
 		}
 
 		esv.refreshTree();
@@ -190,7 +192,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 
 	@Override
 	public void doubleClickEvent(Object selectedNode) {
-		log.log("doubleClickEvent");
+		logger.log("doubleClickEvent");
 
 		this.selectedNode = (Node)selectedNode;
 
@@ -204,7 +206,7 @@ public class GuiHandler implements ExplorerEventsHandler {
 
 	@Override
 	public void eventExit() {
-		log.log("eventExit");
+		logger.log("eventExit");
 	}
 
 	//Same as ExplorerSwingView.addNodeToParentNode, but also add node in internal representation of the tree

@@ -10,7 +10,7 @@ public class CopyNodeVisitor extends NodeVisitor {
 
     private Node rootOfCopy;
     private GuiHandler gui = GuiHandler.getInstance();
-
+    private Logger logger = Logger.getInstance();
 
     public CopyNodeVisitor(Node rootOfCopy) {
         this.rootOfCopy = rootOfCopy;
@@ -39,6 +39,7 @@ public class CopyNodeVisitor extends NodeVisitor {
 
         } catch (NoSelectedNodeException | NoParentNodeException | NoPreviousInsertedNodeException | LevelException e) {
             e.printStackTrace();
+            logger.log(e.toString());
         }
     }
 
@@ -61,6 +62,7 @@ public class CopyNodeVisitor extends NodeVisitor {
 
         } catch (NoSelectedNodeException | NoParentNodeException | NoPreviousInsertedNodeException | LevelException e) {
             e.printStackTrace();
+            logger.log(e.toString());
         }
     }
 
@@ -85,6 +87,7 @@ public class CopyNodeVisitor extends NodeVisitor {
 
         } catch (NoSelectedNodeException | NoParentNodeException | NoPreviousInsertedNodeException | LevelException e) {
             e.printStackTrace();
+            logger.log(e.toString());
         }
     }
 
@@ -93,7 +96,39 @@ public class CopyNodeVisitor extends NodeVisitor {
         //Cannot copy aliases - do nothing
     }
 
+    //Get the name of the copy
     private String getCopyName(Node node){
-        return node.getName() + "(copy)";
+        //Simply parse the name to see if the file is a copy (if it contains the string "(copy_"
+        //If the file is a copy, increment the copy number ( "copy_1" becomes "copy_2)
+
+        String name = node.getName();
+        String strCopy = "(copy_";
+
+        int index = name.lastIndexOf(strCopy);
+
+        String copyName = name + strCopy + "1)";
+
+        //This is a copy
+        if(index != -1){
+            try {
+                //Get the copy number
+                String tmp = name.substring(index + strCopy.length());
+                int closingParIndex = tmp.indexOf(")");
+                if(closingParIndex != - 1) {
+                    int copyNum = Integer.parseInt(tmp.substring(0, closingParIndex));
+
+                    //Creating new name with incremented copy number
+                    copyName = name.replace(strCopy + copyNum, strCopy + ++copyNum);
+                }
+
+            //NumberFormatException if the char following the String "(copy_" is not a number
+            //It will happen if the user put "(copy_" in the name of its file
+            }catch (NumberFormatException ignored){
+
+            }
+        }
+
+
+        return copyName;
     }
 }
